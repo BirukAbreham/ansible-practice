@@ -1,0 +1,21 @@
+# Understanding privilege escalation in Ansible Playbooks
+#
+# By default, tasks will run as the connecting user - this might be either
+# `root` or any regular user with SSH access to the remote nodes in an
+# inventory
+#
+# To run a command with extended permissions, such as a command that requires 
+# `sudo`, you'll need to include a `become` diretive set to `yes` in your play
+# This can be done either as a global setting valid to all tasks in that play,
+# or as an individual instruction applied per task.
+#
+# example
+#
+
+- hosts: all
+  become: yes
+  tasks:
+    - name: Update apt cache
+      apt:
+        update_cache: yes
+

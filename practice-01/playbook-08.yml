@@ -1,0 +1,14 @@
+# How to install and Manage system package in Ansible
+#
+# Automating the installation of required system package is a common operational task
+# Ansible playbooks, since a typical application stack requires software from different sources
+#
+# Exampel, installing vim on all systems
+
+- hosts: all
+  become: yes
+  tasks:
+    - name: Update apt cache and make sure Vim is installed
+      apt:
+        name: vim
+        update_cache: yes

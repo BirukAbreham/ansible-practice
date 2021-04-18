@@ -1,0 +1,9 @@
+# Using variables in ansible
+- hosts: all
+  vars:
+    - username: biruk
+    - home: /home/biruk
+  tasks:
+    - name: print variables
+      debug:
+        msg: "Username: {{ username }}, Home dir: {{ home }}"

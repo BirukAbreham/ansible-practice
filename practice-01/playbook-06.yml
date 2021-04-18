@@ -1,0 +1,15 @@
+# How to use loops in Ansible playbooks
+# a `loop` allows you to repeat instructions, typically until a certian
+# condition is met
+
+- hosts: all
+  tasks:
+    - name: creates users files
+      file:
+        path: /tmp/ansible-{{ item }}
+        state: touch
+      loop:
+        - abuye
+        - pussy
+        - cat
+

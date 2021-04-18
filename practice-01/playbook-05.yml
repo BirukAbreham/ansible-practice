@@ -1,0 +1,22 @@
+# conditional with ignore to do other staff
+# - ignore_errors -> used to pass if error occurs in a task
+# - register -> used to make a boolean variable `file_exists`
+- hosts: all
+  vars:
+    - user: biruk
+  tasks:
+    - name: Check if file already exists
+      command: ls /home/{{user}}/myfile
+      register: file_exists
+      ignore_errors: yes
+
+    - name: create file for user
+      file:
+        path: /home/{{ user }}/myfile
+        state: touch
+      when: file_exists is failed
+
+    - name: show message if file exists
+      debug:
+        msg: The user file already exists
+      when: file_exists is succeeded
