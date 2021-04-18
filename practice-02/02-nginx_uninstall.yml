@@ -1,0 +1,18 @@
+# Ansible examples
+#
+# Uninstall Nginx using Ansible
+# 
+
+# - From the list of hosts we are going to use the `web` hosts made `become` global for a sudo password
+# - task step 1) stop nginx daemon service
+# - task step 2) make sure nginx is removed
+
+- hosts: web
+  become: yes
+  tasks:
+    - name: Stop nginx daemon service
+      service:
+        name: nginx
+        state: stopped
+    - name: ensure nginx is not installed
+      apt: name=nginx state=absent

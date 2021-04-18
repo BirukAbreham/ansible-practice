@@ -1,0 +1,65 @@
+# Ansible examples
+# 
+# install and configure Nginx to serve static web file
+#
+
+# Here are the basic steps in this configuration file
+# - From the list of hosts we are going to use the `web` host
+# - task step 1) Install nginx web server to the web host (uses sudo so `become` is yes)
+# - task step 2) Starts the nginx service daemon (uses sudo so `become` is yes)
+# - task step 3) Copies the nginx configuration file from master node to the web host
+# - task step 4) Creates a symbolic link from `/etc/nginx/sites-available/static_site.cfg` to `/etc/nginx/sites-enabled/default`
+# - task step 5) Copies the content of the static web site to `/home/biruk/static-site`
+# - task step 6) Create `nginx` group default nginx setting
+# - task step 7) Create `nginx` user default nginx setting
+# - task step 8) Make ownership of the file to `nginx` from `biruk` by recursive assignment
+# - task step 9) Restarts the nginx daemon for changes to make effect
+
+- hosts: web
+  vars:
+    - default_user_password: Biruk@123
+  tasks:
+    - name: Install nginx the latest version to the web server
+      apt: name=nginx state=latest
+      become: yes
+    - name: Start the nginx service daemon
+      service:
+        name: nginx
+        state: started
+      become: yes
+    - name: copy the nginx config file and restart nginx
+      copy:
+        src: ./static_site.cfg
+        dest: /etc/nginx/sites-available/static_site.cfg
+      become: yes
+    - name: create symlink
+      file:
+        src: /etc/nginx/sites-available/static_site.cfg
+        dest: /etc/nginx/sites-enabled/default
+        state: link
+      become: yes
+    - name: copy the content of the web site files
+      copy:
+        src: ./static-site
+        dest: /home/biruk
+    - name: Create nginx group
+      group:
+        name: nginx
+        state: present
+      become: yes
+    - name: Create a user nginx
+      user:
+        name: nginx
+        state: present
+        password: "{{ default_user_password | password_hash('sha512','A512') }}"
+        shell: /bin/bash
+        group: nginx
+      become: yes
+    - name: Give ownership to nginx the directory and file /home/biruk/static-site
+      file: dest=/home/biruk/static-site owner=nginx group=nginx mode=u=rwX,g=rX,o=rX recurse=yes
+      become: yes
+    - name: restart nginx service daemon
+      service:
+        name: nginx
+        state: restarted
+      become: yes
