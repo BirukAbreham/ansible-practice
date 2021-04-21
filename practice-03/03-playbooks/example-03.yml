@@ -1,0 +1,32 @@
+# Ansible Vault
+# ---------------
+# - Access to sensitive data such as Passwords, API keys, other secrets
+# - Ansible Vault provides a way to encrypt and decrypt files used by playbooks
+#
+
+# Create, View and Edit Encrypted Files
+# --------------------------------------
+# - Create a new encrypted files using the command
+#       ansible-vault create filename
+# - View an encrypted file using the command
+#       ansible-vault view filename
+# - Edit an encrypted file using the command
+#       ansible-vault edit filename
+#
+
+# Playbook Run
+# ---------------
+# ansible-playbook --ask-vault-pass `file.yml` -K
+---
+- name: Use vault data
+  hosts: web
+  become: true
+
+  tasks:
+    - name: Load variable from encrypted file
+      include_vars:
+        file: secrete-03
+    
+    - name: Display the encrypted variable
+      debug:
+        msg: "{{ secrete_msg }}"

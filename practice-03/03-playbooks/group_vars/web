@@ -1,0 +1,5 @@
+# variables for web group hosts
+username:
+    test: 
+        uname: test
+        description: Test User Account

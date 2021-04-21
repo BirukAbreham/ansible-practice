@@ -1,0 +1,15 @@
+# Simple playbook example
+---
+- name: New user is created
+  hosts: web
+  become: true
+  tasks:
+    - name: User gets created
+      user:
+        name: test
+        state: present
+  tasks:
+    - name: Remove the user
+      user:
+        name: test
+        state: absent

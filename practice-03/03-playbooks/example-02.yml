@@ -1,0 +1,82 @@
+# Using Variables in Plays
+# ---------------------------
+# Reuse and store values for dynamic and values
+# Examples of values that variables might contain:
+#    - Users to create, modify or delete
+#    - Software to install or uninstall
+#    - Services to stop, start, or restart
+#    - Files to create, modify, or remove
+#    - Archives to retrieve from the Internet, or to extract
+
+# Variable Scope
+# ------------------
+# Global
+#     - The value is set for all hosts
+#     - Example: extra variables you set in the job template
+# Host
+#     - The value is set for a particular hsot (or group)
+#     - Examples: variables set for a host in the inventory or a host_vars directory
+# Play
+#     - The value is set for all hosts in the context of the current play
+#     - Examples: vars directives in a play, include_vars tasks, and so on
+
+# Variable Precedence
+# --------------------
+# Command Line > Play > Host > Global
+
+# Host Variables and Group Variables
+# -----------------------------------
+# Host Variables
+#     - apply for a specific host
+# Group Bariables 
+#     - apply to all hosts in a host group
+# 
+# - Can be defined in `host_vars`, `group_vars` or in inventory
+
+# The Register Statement
+# -----------------------
+# The `register` statement will capture the output of a command or task. The output
+# is saved into a temporary variable.
+#
+
+# ---
+# - name: New user is created
+#   hosts: web
+#   become: true
+#   vars:
+#     username: test
+  
+#   tasks:
+#     - name: User gets created
+#       user:
+#         name: "{{ username }}"
+#         state: absent
+
+# ---
+# - name: New user is created
+#   hosts: web
+#   become: true
+#   vars:
+#     username:
+#       test: 
+#         uname: test
+#         description: Test User Account
+  
+#   tasks:
+#     - name: User gets created
+#       user:
+#         name: "{{ username['test']['uname'] }}"
+#         comment: "{{ username['test']['description']" }}
+#         state: absent
+
+# variables from `group_vars`
+---
+- name: New user is created
+  hosts: web
+  become: true  
+  tasks:
+    - name: User gets created
+      user:
+        name: "{{ username['test']['uname'] }}"
+        comment: "{{ username['test']['description']" }}
+        state: absent
