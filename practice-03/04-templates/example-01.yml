@@ -1,0 +1,28 @@
+# Jinja2 template module
+# ------------------------
+
+# Deploying Files to Managed hosts
+# ---------------------------------
+# - There are a no. of Ansible modules that can be used to deploy files, including
+#     - copy - to copy a file to the managed hosts
+#     - file - to make sure a file, directory or link exists and has a certain setting
+#     - synchronize - to copy entire directories of content
+# - You can also edit fiels in place with Ansible modules
+#     - lineinfile - to make sure a certain line exists in a file
+
+# However, what if a file you want to deploy needs to be customized for each managed host
+#     - Use Jinja2 template files and the template module
+
+---
+- name: Deploy files using a Jinja2 template
+  hosts: all
+  become: true
+
+  tasks:
+    - name: Deploy the message of the day tempalte
+      template:
+        src: motd.j2
+        dest: /etc/motd
+        owner: root
+        group: root
+        mode: "0644"
