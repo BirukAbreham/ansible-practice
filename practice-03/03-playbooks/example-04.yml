@@ -1,0 +1,17 @@
+# Task iteration with loops
+# --------------------------
+# - Loops saves from the need to write multiple tasks that use the same module
+# - Ansible supports iterating a task over a set of items using the `loop` keyword
+# - The loop variable `item` holds the value used during each iteration
+
+---
+- name: New user is created
+  hosts: db
+  become: true
+
+  tasks:
+    - name:
+      user:
+        name: "{{ item }}"
+        state: absent
+      loop: "{{ db_users }}"

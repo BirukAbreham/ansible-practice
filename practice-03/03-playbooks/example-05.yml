@@ -1,0 +1,41 @@
+# Running Tasks Conditionally
+# -----------------------------
+# - Ansible can use conditionals to run or skip tasks when certain conditions are met
+# - Variables and facts can both be tested by conditionals
+# - Operators such as greater than > or less than < to compare strings, numerical data, or Boolean values can be used
+
+# Use Cases
+# -----------
+# - Run  a task if a fact reporting the available memory on a managed host is lower than a value
+# - Run different tasks to create users on a managed host based on which domain it belongs to
+# - Skip a task if a certain variable is not set or is set to a specific value
+# - Use the results of a previous taks to determine whether to run the task
+
+# Using Conditionals
+# -------------------
+# The `when` statement is used to run a task conditionally
+
+---
+- name: New users are created
+  hosts: all
+  become: true
+  vars:
+    web_users:
+      - member
+      - admin
+      - developer
+  
+  tasks:
+    - name: Create database users
+      user:
+        name: "{{ item }}"
+        state: present
+      loop: "{{ db_users }}"
+      when: "'databases' in group_names"
+    
+    - name: Create webserver users
+      user:
+        name: "{{ item }}"
+        state: present
+      loop: "{{ web_users }}"
+      when: "'webservers' in group_names"

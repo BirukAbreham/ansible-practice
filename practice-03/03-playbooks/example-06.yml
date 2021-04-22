@@ -1,0 +1,39 @@
+# Ansible Handlers
+# ------------------
+# - Ansible modules are designed to be idempotent
+# - A properly written playbook and its tasks can be run multiple times without changing the managed host
+# - However, sometimes when a task does make a change to the system, a further task may need to be run
+# - For e.g., a change to a service's configuration file may then require that the service be reloaded 
+#   so that the changed configuration takes effect
+
+# `Handlers` are tasks that respond to a notification triggered by other tasks
+
+---
+- name: New users are created
+  hosts: all
+  become: true
+  vars:
+    web_users:
+      - member
+      - admin
+      - developer
+  tasks:
+    - name: Create database users
+      user:
+        name: "{{ item }}"
+        state: present
+      loop: "{{ db_users }}"
+      when: "'db' in group_names"
+      notify: Reboot system
+
+    - name: Create webserver users
+      user:
+        name: "{{ item }}"
+        state: present
+      loop: "{{ web_users }}"
+      when: "'web' in group_names"
+      notify: Reboot system
+  
+  handlers: 
+    - name: Reboot system
+      reboot:
