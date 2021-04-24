@@ -1,0 +1,7 @@
+# Dynamic Inventories
+# ---------------------
+# - A dynamic inventory script is an executable program that can build an inventory automatically
+# - Usually used to get information from an external "source of truth" like a CMDB
+# - Configured in the same way as a static inventory file, but marked with executable permissions
+#       chmod a+x inventory-script.py
+# - Can be written in any programming language that provides inventory output in JSON format

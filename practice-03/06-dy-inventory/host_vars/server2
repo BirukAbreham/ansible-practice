@@ -1,0 +1,3 @@
+# host variables for the server2 db group system
+---
+become_ask_pass: True
