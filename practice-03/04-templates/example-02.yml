@@ -1,0 +1,16 @@
+# Processing Variables with Jinja2 Filters
+# ------------------------------------------
+
+# Jinja2 Filters
+# ---------------
+# - Filters are used to modify or process the value from the variable
+# - Filters can be useful to prepare data for use in your playbook or template.
+
+# Processing Data with Jinja2 Filters
+# ------------------------------------
+# - To apply filter to a variable:
+#     - Reference the variable, but follow its name with a pipe character
+#     - After the pipe character, add the name of the filter you want to apply
+#     - Some filters might require additional arguments or options in parentheses
+#     - You can chain multiple filters in a pipeline
+

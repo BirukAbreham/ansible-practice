@@ -1,0 +1,11 @@
+# Templating External Data with Lookup Plugin
+# --------------------------------------------
+
+# Using Lookup Plugins to Import Data
+# ------------------------------------
+# - A lookup plugin is an Ansible extension to the Jinja2 templating language
+# - They import and format data from external sources for use in variables and templates
+# - Allows you to use the contents of a file  as a value for a variable
+# - Allows you to look up information from other sources and put them in a template
+
+# 
