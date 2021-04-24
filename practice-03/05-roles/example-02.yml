@@ -1,0 +1,16 @@
+# Ansible Galaxy Command-Line Tool
+# ---------------------------------
+
+# - The `ansible-galaxy` cli tool can be used to search for, display information about, install, list, remove or initialize roles
+# - `ansible-galaxy search` searches for roles
+#     - Use the --author, --platforms, and --galaxy-tags options to narrow search results
+# - `ansible-galaxy info` displays more detailed information about roles
+# - `ansible-galaxy install`  downloads a role from Ansible Galaxy and install it
+
+---
+- name: Use a galaxy role to install apache
+  hosts: web
+  become: true
+
+  roles:
+    - sys_fs.apache

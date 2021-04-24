@@ -1,0 +1,25 @@
+---
+galaxy_info:
+  author: Thomas Mannay
+  role_name: apache
+  description: Install and configure Apache 2.x on Debian and Ubuntu.
+
+  license: MIT
+
+  min_ansible_version: 2.6
+
+  platforms:
+    - name: Debian
+      versions:
+        - jessie
+        - stretch
+    - name: Ubuntu
+      versions:
+        - xenial
+        - bionic
+
+  galaxy_tags:
+    - apache
+    - web
+    - debian
+    - ubuntu

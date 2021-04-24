@@ -1,0 +1,27 @@
+# Roles in Ansible
+# -----------------
+
+# Creating Roles
+# ---------------
+# - Ansible `roles` allow you to make automation code more reusable
+# - Provides packaged tasks that can be configured through variables
+# - The playbook just calls the role and passes it the right values through its variables
+# - Allows you to create generic code for one project and reuse it on other projects
+
+# Creating Ansible Roles
+# -----------------------
+# - You can write a role using the same tools you use to write playbooks
+# - Creating and using roles is a three step process
+#     - Create the role directory structure
+#     - Define the role content
+#     - Use the role in a play
+# - One way to create a role is to start by writing a play and then refactoring it into a generic role
+# - Do not store secrets in a role. Pass them as parameters from the play
+
+---
+- name: New users are created
+  hosts: all
+  become: true
+  
+  roles:
+    - users

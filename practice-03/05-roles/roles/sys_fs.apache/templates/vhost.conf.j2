@@ -1,0 +1,21 @@
+#jinja2: lstrip_blocks: True
+# Ansible managed
+<VirtualHost {% block listen %}{% endblock %}>
+    ServerName {{ item.server_name }}
+{% if item.server_alias is defined %}
+    ServerAlias {{ item.server_alias }}
+{% endif %}
+{% if item.document_root is defined  %}
+    DocumentRoot "{{ item.document_root }}"
+
+    <Directory "{{ item.document_root }}">
+        AllowOverride {{ item.allow_override | default('All') }}
+    </Directory>
+{% endif %}
+
+{% block tls %}{% endblock %}
+
+{% if item.extra_parameters is defined %}
+    {{ item.extra_parameters | indent(4) }}
+{% endif %}
+</VirtualHost>

@@ -1,0 +1,10 @@
+---
+# defaults file for ansible-role-apache
+apache_http_port: 80
+apache_https_port: 443
+apache_disable_modules: []
+apache_enable_modules: []
+apache_http_vhosts:
+  - server_name: example.com
+apache_https_vhosts: []
+apache_global_directives: []

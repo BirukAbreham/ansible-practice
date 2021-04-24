@@ -1,0 +1,11 @@
+{% extends "vhost.conf.j2" %}
+{% block listen %}*:{{ apache_https_port }}{% endblock %}
+{% block tls %}    SSLEngine on
+    SSLCipherSuite EECDH+AESGCM:EDH+AESGCM
+    SSLProtocol All -SSLv2 -SSLv3 -TLSv1 -TLSv1.1
+    SSLHonorCipherOrder On
+    SSLCompression off
+    SSLCertificateFile {{ item.ssl_certificate_file }}
+    SSLCertificateKeyFile {{ item.ssl_certificate_key_file }}
+    SSLCertificateChainFile {{ item.ssl_certificate_chain_file }}
+{% endblock %}

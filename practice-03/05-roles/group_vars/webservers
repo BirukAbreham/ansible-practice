@@ -1,0 +1,20 @@
+# variables for the webservers group
+
+    username:
+        test:
+            uname: test
+            description: Test User Account
+            password: "{{ secret }}"
+        dev:
+            uname: dev
+            description: Developer User Account
+            password: "{{ secret }}"
+        qa:
+            uname: qa
+            description: Quality Assurance Account
+            password: "{{ secret }}"
+
+    web_users:
+        - member
+        - admin
+        - developer

@@ -1,0 +1,69 @@
+---
+- name: Configure ports
+  template:
+    src: ports.conf.j2
+    dest: /etc/apache2/ports.conf
+  notify: Restart Apache
+
+- name: Configure Apache
+  template:
+    src: apache.conf.j2
+    dest: /etc/apache2/conf-available/apache.conf
+  when: apache_global_directives
+
+- name: Enable Apache configuration
+  file:
+    src: /etc/apache2/conf-available/apache.conf
+    dest: /etc/apache2/conf-enabled/apache.conf
+    state: link
+  when: apache_global_directives
+  notify: Restart Apache
+
+- name: Disable modules
+  apache2_module:
+    name: '{{ item }}'
+    state: absent
+  with_items: '{{ apache_disable_modules }}'
+  notify: Restart Apache
+
+- name: Enable modules
+  apache2_module:
+    name: '{{ item }}'
+  with_items: '{{ apache_enable_modules }}'
+  notify: Restart Apache
+
+- name: Create HTTP vhosts
+  template:
+    src: http-vhost.conf.j2
+    dest: '/etc/apache2/sites-available/{{ item.server_name }}.{{ apache_http_port }}.conf'
+  with_items: '{{ apache_http_vhosts }}'
+  notify: Reload Apache
+  when: apache_http_vhosts is defined
+
+- name: Create HTTPS vhosts
+  template:
+    src: https-vhost.conf.j2
+    dest: '/etc/apache2/sites-available/{{ item.server_name }}.{{ apache_https_port }}.conf'
+  with_items: '{{ apache_https_vhosts }}'
+  notify: Reload Apache
+  when: apache_https_vhosts is defined
+
+- name: Enable HTTP vhosts
+  file:
+    src: '/etc/apache2/sites-available/{{ item.server_name }}.{{ apache_http_port }}.conf'
+    dest: '/etc/apache2/sites-enabled/{{ item.server_name }}.{{ apache_http_port }}.conf'
+    state: link
+  with_items:
+    - '{{ apache_http_vhosts }}'
+  notify: Reload Apache
+  when: apache_http_vhosts is defined
+
+- name: Enable HTTPS vhosts
+  file:
+    src: '/etc/apache2/sites-available/{{ item.server_name }}.{{ apache_https_port }}.conf'
+    dest: '/etc/apache2/sites-enabled/{{ item.server_name }}.{{ apache_https_port }}.conf'
+    state: link
+  with_items:
+    - '{{ apache_https_vhosts }}'
+  notify: Reload Apache
+  when: apache_https_vhosts is defined

@@ -1,0 +1,26 @@
+---
+sudo: required
+language: python
+python: 2.7
+cache: pip
+
+env:
+  - ANSIBLE=2.6
+  - ANSIBLE=2.7
+  - ANSIBLE=2.8
+
+services:
+  - docker
+
+install:
+  - pip install ansible=="$ANSIBLE" molecule 'testinfra>=3' docker
+
+script:
+  - molecule test
+
+branches:
+  only:
+    - master
+
+notifications:
+  webhooks: https://galaxy.ansible.com/api/v1/notifications/

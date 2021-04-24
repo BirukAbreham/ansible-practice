@@ -1,0 +1,5 @@
+---
+# handlesr for users
+  handlers:
+    - name: Reboot system
+      reboot:
